@@ -1,0 +1,19 @@
+[project]
+name = "bloom-analysis"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.13",
+    "matplotlib>=3.9",
+    "statsmodels>=0.14",
+    "scikit-learn>=1.5",
+    "krippendorff>=0.8",
+    "python-docx>=1.1",
+    "tabulate>=0.10.0",
+    "tqdm>=4.70.0",
+    "python-dotenv>=1.2.3",
+]
+[tool.uv]
+package = false
