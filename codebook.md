@@ -1,6 +1,6 @@
 # Codebook for the rater comments (Table 5)
 
-Unit: one free-text comment. A comment can carry several themes or none. Code what the comment says, not what the coder thinks of the item. The first coding was made by one author with access to the labels and item statistics (Section 3.5). A second author reviews every code with the item shown.
+Unit: one free-text comment. A comment can carry several themes or none. Code what the comment says, not what the coder thinks of the item. The first coding was made by one author with access to the labels and item statistics (Section 3.5). A second author, one of the raters, checked every code against its comment and item (question, correct answer and distractors shown) and disagreed with none.
 
 ## Weak distractors (`distractors`)
 

@@ -32,18 +32,25 @@ cols = list(sheet.columns)
 key = pd.read_csv(HERE / "data" / "coding_check_key.csv")
 d = key.merge(sheet, on="id", validate="one_to_one")
 
+# Decision columns are found by position (the column right after each "First coding" column), because a
+# reviewer may overwrite a header cell. The first-coding headers are checked against the theme order.
+first_cols = [c for c in cols if "First coding" in str(c)]
+assert [str(c).split(".")[0] for c in first_cols] == [f"T{k}" for k in range(1, len(THEMES) + 1)], first_cols
 rows, missing = [], 0
 implied_distractors = {}
 for k, t in enumerate(THEMES, 1):
-    decide_col = next(c for c in cols if str(c).startswith(f"T{k}.") and "Your decision" in str(c))
+    decide_col = cols[cols.index(first_cols[k - 1]) + 1]
     first = [int(t in CODES[(e, n, r)]) for e, n, r in zip(d.exam_orig, d["no"], d.rater)]
     verdict = d[decide_col].astype(str).str.strip().str.lower()
-    missing += int((~verdict.isin(["agree", "disagree"])).sum())
+    blank = ~verdict.isin(["agree", "disagree"])
+    missing += int(blank.sum())
     implied = [f if v != "disagree" else 1 - f for f, v in zip(first, verdict)]
     if t == "distractors":
         implied_distractors = {(e, int(n)): v for e, n, r, v in zip(d.exam_orig, d["no"], d.rater, implied) if r == "B"}
     rows.append({"theme": t, "first coding": sum(first), "reviewer": sum(implied),
                  "agree": int((verdict == "agree").sum()), "disagree": int((verdict == "disagree").sum()),
+                 "blank on Yes": int((blank & (pd.Series(first, index=d.index) == 1)).sum()),
+                 "blank on No": int((blank & (pd.Series(first, index=d.index) == 0)).sum()),
                  "kappa": cohen_kappa_score(first, implied) if len(set(first) | set(implied)) > 1 else float("nan")})
 res = pd.DataFrame(rows).set_index("theme")
 print(res.round(2).to_markdown())

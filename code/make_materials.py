@@ -155,7 +155,8 @@ items.to_csv(MAT / "data" / "items.csv", index=False)
 cb = ["# Codebook for the rater comments (Table 5)\n\n",
       "Unit: one free-text comment. A comment can carry several themes or none. Code what the comment says, not "
       "what the coder thinks of the item. The first coding was made by one author with access to the labels and "
-      "item statistics (Section 3.5). A second author reviews every code with the item shown.\n"]
+      "item statistics (Section 3.5). A second author, one of the raters, checked every code against its comment and "
+      "item (question, correct answer and distractors shown) and disagreed with none.\n"]
 for t, (title, label, rule) in THEMES.items():
     cb.append(f"\n## {title} (`{t}`)\n\nTable 5: {label}.\n\n{rule}\n\nExamples:\n\n")
     cb += [f"- \"{x}\"\n" for x in examples(t)]
